@@ -42,7 +42,10 @@ const formsAndHandlers = {
   'create-freet': createFreet,
   'edit-freet': editFreet,
   'delete-freet': deleteFreet,
-  'view-freet': viewFreet // Add to formsAndHandlers to interact with on frontend
+  'view-freet': viewFreet, // Add to formsAndHandlers to interact with on frontend
+  'add-intent': createIntent,
+  'get-intent': getIntent,
+  'delete-intent': deleteIntent
 };
 
 // Attach handlers to forms
