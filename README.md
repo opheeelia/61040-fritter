@@ -333,3 +333,198 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+`GET /api/filters` - Get all public filters for searching
+
+**Returns** 
+
+- An array of all public filters sorted by date created
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the filter is not public and the user is not the creator of the filter
+
+`GET /api/filters?creator=USER_ID` - Get all saved filters
+
+**Returns** 
+
+- An array of all of the user’s saved filters sorted by date created
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the logged in user does not match the user id
+
+`POST /api/filters` - Create a new filter
+
+**Body**
+
+- filter_id {id} (optional) - Id of the filter to copy from
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the referenced filter is not public and the user is not the creator of the filter
+- 404 if the filter_id is invalid
+
+`DELETE /api/filters:filter_id?` - Delete a filter
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the logged in user does not match the user id
+
+`GET /api/filter/:id` - Get all posts that pass the specified filter
+
+**Returns**
+
+- An array of all freets filtered by the specified filter and sorted by the date created
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the logged in user does not match the referenced filter’s user
+
+`GET /api/labels` - Get top X most popular labels used for searching
+
+**Returns**
+
+- An array of at most X labels sorted by the most popular (has the most freets)
+
+`GET /api/labels?prefix=PREFIX` - Get top X most popular labels used with the given prefix 
+
+**Returns**
+
+- An array of at most X labels that match the given prefix sorted by the most popular (has the most freets)
+
+`GET /api/labels/:label?` - View all of the freets that contain the label for searching
+
+**Returns** 
+
+- An array of all of the freets that contain the label sorted by freet creation date
+
+**Throws**
+
+- 404 if label is not found
+
+`POST /api/labels/` - Create a new label 
+
+**Body**
+
+- freet_id {id} - Id of the freet the label is attached to
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the user is not the author of the referenced freet
+- 404 if the freet_id is invalid
+
+`DELETE /api/labels/:freet_id?` - Delete a label associated with a post
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the user is not the author of the referenced freet
+- 404 if the freet_id is invalid
+
+`GET /api/suggestions/:freet_id?` - Get the suggestions for a freet
+
+**Returns**
+
+- An object containing all of the suggested labels, intents, and supplements mapped to a count of how many people suggested each one
+
+**Throws**
+
+- 404 if the freet_id is invalid
+
+`POST /api/suggestions/:freet_id?` - Create a suggestion for a freet by the logged in user
+
+**Body**
+
+- labels {array<string>} (optional) - An array of labels to add
+- intent {string} (optional) - A suggested intent
+- supplement {string} (optional) - A suggested link to supplement the intent
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the user is not the author of the referenced freet
+- 404 if the freet_id is invalid
+
+`PUT /api/suggestions/:freet_id?` - Edit the suggestion for a freet by the logged in user. Can also be used to delete a user’s suggestions. 
+
+**Body**
+
+- labels {array<string>} (optional) - An edited array of labels to add
+- intent {string} (optional) - An edited suggested intent
+- supplement {string} (optional) - An edited suggested link to supplement the intent
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the user is not the author of the referenced freet
+- 404 if the freet_id is invalid
+
+`GET /api/intent/:freet_id?` - Get the intent of a freet
+
+**Returns**
+
+- Object of freet intent including the intent type and an optional supplementary link
+
+**Throws**
+
+- 404 if the freet doesn’t exist
+- 404 if the intent doesn’t exist
+
+`POST /api/intent/:freet_id?` - Add intent to a freet
+
+**Body**
+
+- Intent of the freet
+- supplement {string} (Optional) - A supplementary link
+
+**Throws**
+
+- 403 if the user is not logged in
+- 404 if the freet_id is invalid
+- 403 if the user is not the author of the referenced freet
+- 400 if the intent was already created
+- 400 if the intent is not valid or it does not contain a supplement if required
+
+`DELETE /api/intent/:freet_id?` - Delete the intent of a freet
+
+**Returns**
+
+- Success Message
+
+**Throws**
+
+- 403 if the user is not logged in
+- 403 if the user is not the author of the referenced freet
+- 404 if the freet doesn’t exist
+- 404 if the intent doesn’t exist
