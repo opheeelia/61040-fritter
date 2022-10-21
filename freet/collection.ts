@@ -2,6 +2,7 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
+import { Intent } from 'intent/model';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -12,6 +13,13 @@ import UserCollection from '../user/collection';
  * and contains all the information in Freet. https://mongoosejs.com/docs/typescript.html
  */
 class FreetCollection {
+  static async populateIntent(freet: HydratedDocument<Freet>) {
+    return freet.populate<{intent: Intent}>({
+      path: 'intent',
+      populate: {path: 'freetId'}
+    })
+  }
+
   /**
    * Add a freet to the collection
    *
@@ -38,7 +46,9 @@ class FreetCollection {
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
-    return FreetModel.findOne({_id: freetId});
+    const freet = await FreetModel.findOne({_id: freetId});
+    this.populateIntent(freet);
+    return freet;
   }
 
   /**
@@ -48,7 +58,9 @@ class FreetCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({dateModified: -1});
+    const freets = await FreetModel.find({}).sort({dateModified: -1});
+    await Promise.all(freets.map(this.populateIntent));
+    return freets;
   }
 
   /**
@@ -59,7 +71,9 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({authorId: author._id});
+    const freets = await FreetModel.find({authorId: author._id});
+    await Promise.all(freets.map(this.populateIntent));
+    return freets;
   }
 
   /**

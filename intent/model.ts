@@ -8,13 +8,19 @@ import {Schema, model} from 'mongoose';
 
 // It is implied that the intent is created by the author of the freet 
 export type Intent = {
-  _id: Types.ObjectId; // equal to the freetId
+  _id: Types.ObjectId;
+  freetId: Types.ObjectId;
   intent: string; // limmited to the values of "inform" "joke" ""
   supplement: string;
 };
 
 const IntentSchema = new Schema<Intent>({
   // The intent of the freet
+  freetId: {
+    type: Schema.Types.ObjectId, 
+    ref: 'Freet',
+    required: true
+  },
   intent: {
     type: String,
     required: true

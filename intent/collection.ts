@@ -19,7 +19,7 @@ class IntentCollection {
    */
   static async addOne(freetId: Types.ObjectId | string, intention: string, supplement?: string): Promise<HydratedDocument<Intent>> {
     const intent = new IntentModel({
-      _id: freetId,
+      freetId: freetId,
       intent: intention
     });
     if (supplement != null) {
@@ -36,7 +36,7 @@ class IntentCollection {
    * @return {Promise<HydratedDocument<Intent>> | Promise<null> } - The freet with the given freetId, if any
    */
     static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Intent>> {
-    return IntentModel.findOne({_id: freetId});
+    return IntentModel.findOne({freetId: freetId});
   }
 
   /**
@@ -46,7 +46,7 @@ class IntentCollection {
    * @return {Promise<Boolean>} - true if the freet has been deleted, false otherwise
    */
   static async deleteOne(freetId: Types.ObjectId | string): Promise<boolean> {
-    const intent = await IntentModel.deleteOne({_id: freetId});
+    const intent = await IntentModel.deleteOne({freetId: freetId});
     return intent !== null;
   }
 }
