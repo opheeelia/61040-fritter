@@ -14,7 +14,7 @@ class IntentCollection {
    *
    * @param {string} freetId - The id of the freet
    * @param {string} intention - The intent
-   * @param {string} intention - The intent supplement
+   * @param {string} supplement - The intent supplement
    * @return {Promise<HydratedDocument<Intent>>} - The newly created intent
    */
   static async addOne(freetId: Types.ObjectId | string, intention: string, supplement?: string): Promise<HydratedDocument<Intent>> {

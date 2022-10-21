@@ -12,6 +12,20 @@ function showObject(obj) {
   }, 300);
 }
 
+// Show multiple objects on the screen.
+function showObjects(objs) {
+  const pre = document.getElementById('response');
+  const preParent = pre.parentElement;
+  pre.innerText = "";
+  objs.forEach((obj) => {
+    pre.innerText = JSON.stringify(obj, null, 4);
+  });
+  preParent.classList.add('flashing');
+  setTimeout(() => {
+    preParent.classList.remove('flashing');
+  }, 300);
+}
+
 function showResponse(response) {
   response.json().then(data => {
     showObject({
@@ -20,6 +34,19 @@ function showResponse(response) {
       statusText: response.statusText
     });
   });
+}
+
+function showResponses(responses) {
+  let objects = responses.map((response) => 
+    response.json().then(data => 
+      ({
+        data,
+        status: response.status,
+        statusText: response.statusText
+      })
+    )
+  );
+  showObjects(objects);
 }
 
 /**
@@ -45,7 +72,10 @@ const formsAndHandlers = {
   'view-freet': viewFreet, // Add to formsAndHandlers to interact with on frontend
   'add-intent': createIntent,
   'get-intent': getIntent,
-  'delete-intent': deleteIntent
+  'delete-intent': deleteIntent,
+  'view-all-tags': viewAllTags,
+  'add-tag': addTag,
+  // 'view-freets-with-tag': viewFreetsWithTag
 };
 
 // Attach handlers to forms

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
+  <script src="/scripts/tag.js"></script>
   <script src="/scripts/intent.js"></script>
   <script src="/scripts/user.js"></script>
   <script src="/scripts/index.js"></script>
@@ -166,6 +167,37 @@
           </div>
           <input type="submit" value="Delete Freet Intent">
         </form>
+
+        <form id="add-tag">
+          <h3>Add Tag(s) to Freet</h3>
+          <div>
+            <label for="freetId">ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <div>
+            <label for="tagLabels">Tag(s), separated by commas:</label>
+            <textarea id="tagLabels" name="tagLabels"></textarea>
+          </div>
+          <input type="submit" value="Add tag to Freet">
+        </form>
+
+        <form id="view-all-tags">
+          <h3>View All Tags</h3>
+          <div>
+            <label for="prefix">Prefix:</label>
+            <textarea id="prefix" name="prefix"></textarea>
+          </div>
+          <input type="submit" value="View All Tags">
+        </form>
+
+        <!-- <form id="view-freets-with-tag">
+          <h3>View Freets with Specified Tag</h3>
+          <div>
+            <label for="tagLabel">Prefix:</label>
+            <textarea id="tagLabel" name="tagLabel"></textarea>
+          </div>
+          <input type="submit" value="View Freets with Tag">
+        </form> -->
       </div>
     </section>
     <section>
