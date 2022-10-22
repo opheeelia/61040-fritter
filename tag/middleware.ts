@@ -41,7 +41,8 @@ const isTagExists = async (req: Request, res: Response, next: NextFunction) => {
  * Checks if the tag is a valid
  */
 const isValidTag = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body.tagLabel || req.body.tagLabel.match("/[a-zA-Z0-9_]+/") == null) {
+    const pattern = new RegExp("^[\\w]+$");
+    if (!req.body.tagLabel || !pattern.test(req.body.tagLabel)) {
         res.status(400).json({
         error: {
             invalidTag: 'Tags must contain only upper and lower case letters, or underscores and must be non-empty'
