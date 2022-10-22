@@ -15,19 +15,19 @@ class TagCollection {
   /**
    * Add a tag to a freet
    *
-   * @param {string} tagLabel - The tag to add
+   * @param {string} tagLabels - The tags to add
    * @param {string} freetId - The id of the freet to give this tag
    * @return {Promise<Array<HydratedDocument<Tag>>>} - The newly created tags
    */
-  static async addOne(tagLabel: string, freetId: Types.ObjectId | string): Promise<HydratedDocument<Tag>> {
-    return TagModel.create({tagLabel, freetId});
+  static async addAll(tagLabels: string[], freetId: Types.ObjectId | string): Promise<Array<HydratedDocument<Tag>>> {
+    return await TagModel.create(tagLabels.map((tagLabel) => ({tagLabel, freetId})));
   }
 
   /**
    * Find a specific tag freet pair
    */
   static async findOne(tagLabel: string, freetId: string): Promise<HydratedDocument<Tag>> {
-    return TagModel.findOne({tagLabel, freetId});
+    return await TagModel.findOne({tagLabel, freetId});
   }
 
   /**
@@ -35,14 +35,14 @@ class TagCollection {
    */
   static async findAllLabels(prefix: string): Promise<Array<HydratedDocument<Tag>>> {
     // return TagModel.aggregate([{"$group":{_id:"$tagLabel", count:{$sum:1}}}]);
-    return TagModel.aggregate([{$match: {tagLabel: {$regex: `${prefix}.*`}}}, {$sortByCount: "$tagLabel"}]);
+    return await TagModel.aggregate([{$match: {tagLabel: {$regex: `${prefix}.*`}}}, {$sortByCount: "$tagLabel"}]);
   }
 
   /**
    * Get all tag to freet mappings
    */
   static async findAllTagEntries(): Promise<Array<HydratedDocument<Tag>>> {
-    return TagModel.find({});
+    return await TagModel.find({});
   }
 
   // WIP

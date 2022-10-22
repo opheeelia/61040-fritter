@@ -23,15 +23,17 @@ import TagCollection from '../tag/collection';
 /**
  * Checks if freet tag combo exists
  */
-const isTagExists = async (req: Request, res: Response, next: NextFunction) => {
-    const tag = await TagCollection.findOne(req.body.tagLabel, req.params.freetId);
-    if (tag) {
-        res.status(400).json({
-        error: {
-            intentNotFound: `Tag ${req.params.tagLabel} with freet ID ${req.params.freetId} already exists.`
+const doTagsExist = async (req: Request, res: Response, next: NextFunction) => {
+    for (let tagLabel of req.body.tagLabels){
+        const tag = await TagCollection.findOne(tagLabel, req.params.freetId);
+        if (tag) {
+            res.status(400).json({
+            error: {
+                tagAlreadyxists: `Tag ${tagLabel} with freet ID ${req.params.freetId} already exists.`
+            }
+            });
+            return;
         }
-        });
-        return;
     }
 
     next();
@@ -40,20 +42,22 @@ const isTagExists = async (req: Request, res: Response, next: NextFunction) => {
 /**
  * Checks if the tag is a valid
  */
-const isValidTag = (req: Request, res: Response, next: NextFunction) => {
-    const pattern = new RegExp("^[\\w]+$");
-    if (!req.body.tagLabel || !pattern.test(req.body.tagLabel)) {
-        res.status(400).json({
-        error: {
-            invalidTag: 'Tags must contain only upper and lower case letters, or underscores and must be non-empty'
+const areValidTags = (req: Request, res: Response, next: NextFunction) => {
+    for (let tagLabel of req.body.tagLabels){
+        const pattern = new RegExp("^[\\w]+$");
+        if (!pattern.test(tagLabel)) {
+            res.status(400).json({
+            error: {
+                invalidTag: 'Tags must contain only upper and lower case letters, or underscores and must be non-empty'
+            }
+            });
+            return;
         }
-        });
-        return;
     }
     next();
 }
 
 export {
-  isTagExists,
-  isValidTag
+    doTagsExist,
+    areValidTags
 };

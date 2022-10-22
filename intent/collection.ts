@@ -36,7 +36,7 @@ class IntentCollection {
    * @return {Promise<HydratedDocument<Intent>> | Promise<null> } - The freet with the given freetId, if any
    */
     static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Intent>> {
-    return IntentModel.findOne({freetId: freetId});
+    return await IntentModel.findOne({freetId: freetId});
   }
 
   /**

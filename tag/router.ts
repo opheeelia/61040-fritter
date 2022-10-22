@@ -30,15 +30,15 @@ router.get(
 router.post(
   '/:freetId',
   [
-    tagValidator.isTagExists,
-    tagValidator.isValidTag
+    tagValidator.doTagsExist,
+    tagValidator.areValidTags
   ],
   async (req: Request, res: Response) => {
-    const tag = await TagCollection.addOne(req.body.tagLabel, req.params.freetId);
+    const tags = await TagCollection.addAll(req.body.tagLabels, req.params.freetId);
 
     res.status(201).json({
-      message: `You successfully tagged freet ${req.body.freetId} with ${req.body.tagLabel}.`,
-      tag: util.constructTagResponse(tag)
+      message: `You successfully tagged freet ${req.body.freetId} with ${req.body.tagLabels}.`,
+      tags: tags.map((tag)=>util.constructTagResponse(tag))
     });
   }
 );

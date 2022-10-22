@@ -13,13 +13,13 @@ function viewAllTags(fields) {
 }
 
 function addTag(fields) {
-  const newLabels = fields.tagLabels.split(",");
-  newLabels.forEach((tagLabel) => {
-    console.log(tagLabel);
-    fetch(`/api/tags/${fields.freetId}`, {method: 'POST', body: JSON.stringify({"tagLabel": tagLabel}), headers: {'Content-Type': 'application/json'}})
-      .then(showResponse)
-      .catch(showResponse);
-  });
+  fields = {
+    ...fields,
+    tagLabels: fields.tagLabels.split(",")
+  };
+  fetch(`/api/tags/${fields.freetId}`, {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+    .then(showResponse)
+    .catch(showResponse);
 }
 
 // function viewFreetsWithTag(fields){
