@@ -2,6 +2,8 @@ import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import TagCollection from './collection';
 import * as tagValidator from './middleware';
+import * as userValidator from '../user/middleware';
+import * as freetValidator from '../freet/middleware';
 import * as util from './util';
 
 const router = express.Router();
@@ -30,6 +32,9 @@ router.get(
 router.post(
   '/:freetId',
   [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    freetValidator.isValidFreetModifier,
     tagValidator.doTagsExist,
     tagValidator.areValidTags
   ],
