@@ -75,7 +75,11 @@ const formsAndHandlers = {
   'delete-intent': deleteIntent,
   'view-all-tags': viewAllTags,
   'add-tag': addTag,
-  // 'view-freets-with-tag': viewFreetsWithTag
+  // 'view-freets-with-tag': viewFreetsWithTag,
+  'view-own-suggestions': viewSuggestionById,
+  'view-suggestions-by-type': viewSuggestionByType,
+  'add-suggestion': addSuggestion,
+  'delete-suggestion': deleteSuggestion
 };
 
 // Attach handlers to forms

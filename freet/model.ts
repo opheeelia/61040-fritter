@@ -16,6 +16,7 @@ export type Freet = {
   views: number; // Add a new field called "views" with the number type to the interface
   intent: Types.ObjectId;
   tags: Types.ObjectId[];
+  suggestions: Types.ObjectId[];
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -61,6 +62,11 @@ FreetSchema.virtual('intent', {
 })
 FreetSchema.virtual('tags', {
   ref: 'Tag',
+  localField: '_id',
+  foreignField: 'freetId'
+})
+FreetSchema.virtual('suggestions', {
+  ref: 'Suggestion',
   localField: '_id',
   foreignField: 'freetId'
 })

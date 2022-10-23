@@ -19,17 +19,19 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if suggestion type query parameter was supplied
     if (req.query.type !== undefined) {
+      // hacky: put in body for validation
+      req.body = {suggestionType: req.query.type as string};
       next();
       return;
     }
     // TODO: get all of the types and combine them to send response
-    const prefix = req.query.prefix ? req.query.prefix as string : "";
     const labels = await SuggestionCollection.findAllByType(req.query.type as string, req.params.freetId);
     res.status(200).json({suggestions: labels});
     return;
   },
   [
-    // TODO: validation
+    freetValidator.isFreetExists,
+    suggestionValidator.isValidSuggestion
   ],
   async (req: Request, res: Response) => {
     const suggestions = await SuggestionCollection.findAllByType(req.query.type as string, req.params.freetId);
@@ -38,26 +40,25 @@ router.get(
 );
 
 /**
- * Get all suggestions by a user
+ * Get all suggestions for a freet by a user
  *
- * @name GET /api/suggestions/:freetId/:userId
+ * @name GET /api/suggestions/:freetId/mine
  *
  */
 router.get(
-  '/:freetId/:userId',
+  '/:freetId/mine',
   [
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,
-    freetValidator.isValidFreetModifier
   ],
   async (req: Request, res: Response) => {
-    const suggestions = await SuggestionCollection.findAllBySuggestor(req.params.userId, req.params.freetId);
+    const suggestions = await SuggestionCollection.findAllBySuggestor(req.session.userId, req.params.freetId);
     res.status(200).json({suggestions: suggestions});
   },
 );
 
 /**
- * Add suggestions to a freet
+ * Add suggestion to a freet
  *
  * @name POST /api/suggestions/:freetId
  *
@@ -67,17 +68,45 @@ router.post(
   [
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,
-    freetValidator.isValidFreetModifier,
-    suggestionValidator.isSuggestionExist,
-    suggestionValidator.areValidSuggestions
+    suggestionValidator.isValidSuggestion,
+    suggestionValidator.isSuggestionExist
   ],
   async (req: Request, res: Response) => {
-    const suggestions = await SuggestionCollection.addAll(req.body.suggestionLabels, req.params.freetId);
+    const suggestion = await SuggestionCollection.addOne(req.body.suggestion, req.body.suggestionType, req.params.freetId, req.session.userId);
 
     res.status(201).json({
-      message: `You successfully suggestionged freet ${req.body.freetId} with ${req.body.suggestionLabels}.`,
-      suggestions: suggestions.map((suggestion)=>util.constructSuggestionResponse(suggestion))
+      message: `You successfully suggested a ${req.body.suggestionType} for freet ${req.body.freetId}.`,
+      suggestions: util.constructSuggestionResponse(suggestion)
     });
+  }
+);
+
+/**
+ * Delete suggestion to a freet
+ *
+ * @name DELETE /api/suggestions/:suggestionId
+ *
+ */
+router.delete(
+  '/:suggestionId',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    suggestionValidator.isValidSuggestionModifier
+  ],
+  async (req: Request, res: Response) => {
+    const deleted = await SuggestionCollection.deleteOne(req.params.suggestionId);
+    if (deleted) {
+      res.status(200).json({
+        message: `You successfully deleted your suggestion.`,
+      });
+    } else {
+      res.status(404).json({
+        error: {
+          suggestionNotFound: `Could not delete suggestion with id ${req.params.suggestionId}`
+        },
+      });
+    }
   }
 );
 

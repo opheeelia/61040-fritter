@@ -13,13 +13,13 @@ import FreetModel from '../freet/model';
 class SuggestionCollection {
 
   /**
-   * Add suggestion(s) to a freet
+   * Add suggestion to a freet
    *
    * @param {string} suggestion - Suggestion content
    * @param {string} suggestionType - Suggestion type
    * @param {string} freetId - The id of the freet to give this suggestion
    * @param {string} suggestorId - The id of the user giving this suggestion
-   * @return {Promise<HydratedDocument<Suggestion>>} - The newly created suggestions
+   * @return {Promise<HydratedDocument<Suggestion>>} - The newly created suggestion
    */
   static async addOne(suggestion: string, suggestionType: string, freetId: Types.ObjectId | string, suggestorId: Types.ObjectId | string): Promise<HydratedDocument<Suggestion>> {
     const suggestionEntry = new SuggestionModel({
@@ -31,6 +31,29 @@ class SuggestionCollection {
 
     await suggestionEntry.save();
     return suggestionEntry;
+  }
+
+  /**
+   * Find suggestion by user and type
+   * 
+   * @param {string} suggestion - Suggestion content
+   * @param {string} suggestionType - Suggestion type
+   * @param {string} freetId - The id of the freet to give this suggestion
+   * @param {string} suggestorId - The id of the user giving this suggestion
+   * @return {Promise<HydratedDocument<Suggestion>>  | Promise<null>} - The suggestion if exists
+   */
+  static async findOne(suggestion: string, suggestionType: string, suggestorId: Types.ObjectId | string, freetId: Types.ObjectId | string): Promise<HydratedDocument<Suggestion>> {
+    return await SuggestionModel.findOne({suggestion, suggestionType, suggestorId, freetId});
+  }
+
+  /**
+   * Find suggestion by id
+   * 
+   * @param {string} suggestionId - Suggestion id
+   * @return {Promise<HydratedDocument<Suggestion>>  | Promise<null>} - The suggestion if exists
+   */
+  static async findOneById(suggestionId: string | Types.ObjectId): Promise<HydratedDocument<Suggestion>> {
+    return await SuggestionModel.findOne({_id: suggestionId});
   }
 
   /**

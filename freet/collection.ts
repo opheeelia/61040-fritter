@@ -23,7 +23,12 @@ class FreetCollection {
       {
         path: 'tags',
         populate: {path: 'freetId'}
-      }]);
+      },
+      {
+        path: 'suggestions',
+        populate: {path: 'freetId'}
+      }
+    ]);
   }
 
   /**

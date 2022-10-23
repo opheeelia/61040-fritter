@@ -46,7 +46,7 @@ const isValidIntent = async (req: Request, res: Response, next: NextFunction) =>
   if (!(req.body.intent in IntentType)) {
     res.status(404).json({
       error: {
-        freetNotFound: `Freet with freet ID ${req.params.freetId} does not exist.`
+        invalidIntent: `${req.body.intent} is not a valid intent`
       }
     });
     return;
@@ -62,7 +62,7 @@ const isValidSupplement = (req: Request, res: Response, next: NextFunction) => {
     if (req.body.intent == IntentType.Inform) {
       res.status(400).json({
         error: {
-          freetNotFound: 'Informing freets must be accompanied by a source link supplement.'
+          invalidIntent: 'Informing freets must be accompanied by a source link supplement.'
         }
       });
       return;

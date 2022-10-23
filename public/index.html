@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
+  <script src="/scripts/suggestion.js"></script>
   <script src="/scripts/tag.js"></script>
   <script src="/scripts/intent.js"></script>
   <script src="/scripts/user.js"></script>
@@ -198,6 +199,62 @@
           </div>
           <input type="submit" value="View Freets with Tag">
         </form> -->
+
+        <form id="view-suggestions-by-type">
+          <h3>View Suggestions by Type</h3>
+          <div>
+            <label for="freetId">Freet Id:</label>
+            <textarea id="freetId" name="freetId"></textarea>
+          </div>
+          <div>
+            <label for="suggestion-type">Select type:</label>
+            <select name="suggestion-type" id="suggestion-type">
+              <option value="Label">Label</option>
+              <option value="Intent">Intent</option>
+              <option value="Supplement">Supplement</option>
+            </select>
+          </div>
+          <input type="submit" value="View Suggestions by Type">
+        </form>
+
+        <form id="view-own-suggestions">
+          <h3>View your suggestions</h3>
+          <div>
+            <label for="freetId">Freet Id:</label>
+            <textarea id="freetId" name="freetId"></textarea>
+          </div>
+          <input type="submit" value="View your suggestions">
+        </form>
+        
+        <form id="add-suggestion">
+          <h3>Add a suggestion</h3>
+          <div>
+            <label for="freetId">Freet Id:</label>
+            <textarea id="freetId" name="freetId"></textarea>
+          </div>
+          <div>
+            <label for="suggestion">Suggestion:</label>
+            <textarea id="suggestion" name="suggestion"></textarea>
+          </div>
+          <div>
+            <label for="suggestionType">Select type:</label>
+            <select name="suggestionType" id="suggestionType">
+              <option value="Label">Label</option>
+              <option value="Intent">Intent</option>
+              <option value="Supplement">Supplement</option>
+            </select>
+          </div>
+          <input type="submit" value="Add a suggestion">
+        </form>
+
+        <form id="delete-suggestion">
+          <h3>Delete a suggestion</h3>
+          <div>
+            <label for="suggestion">Suggestion:</label>
+            <textarea id="suggestion" name="suggestion"></textarea>
+          </div>
+          <input type="submit" value="Delete a suggestion">
+        </form>
       </div>
     </section>
     <section>

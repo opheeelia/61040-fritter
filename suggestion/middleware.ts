@@ -1,63 +1,86 @@
 import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
-import TagCollection from '../tag/collection';
-
-// /**
-//  * Checks if a freet with freetId is req.params exists
-//  */
-//  const isIntentNew = async (req: Request, res: Response, next: NextFunction) => {
-//   const validFormat = Types.ObjectId.isValid(req.params.freetId);
-//   const intent = validFormat ? await IntentCollection.findOne(req.params.freetId) : '';
-//   if (intent) {
-//     res.status(404).json({
-//       error: {
-//         intentNotFound: `Intent with freet ID ${req.params.freetId} already exists.`
-//       }
-//     });
-//     return;
-//   }
-
-//   next();
-// };
+import SuggestionCollection from '../suggestion/collection';
+import { SuggestionType } from './util';
+import { IntentType } from '../intent/util';
 
 /**
- * Checks if freet tag combo exists
+ * Checks if the current user is the author of the freet whose freetId is in req.params
  */
-const doTagsExist = async (req: Request, res: Response, next: NextFunction) => {
-    for (let tagLabel of req.body.tagLabels){
-        const tag = await TagCollection.findOne(tagLabel, req.params.freetId);
-        if (tag) {
-            res.status(400).json({
-            error: {
-                tagAlreadyxists: `Tag ${tagLabel} with freet ID ${req.params.freetId} already exists.`
-            }
-            });
-            return;
-        }
+ const isValidSuggestionModifier = async (req: Request, res: Response, next: NextFunction) => {
+    const suggestion = await SuggestionCollection.findOneById(req.params.suggestionId);
+    const userId = suggestion.suggestorId;
+    if (req.session.userId !== userId.toString()) {
+      res.status(403).json({
+        error: 'Cannot modify other users\' suggestions.'
+      });
+      return;
     }
+  
+    next();
+  };
 
+/**
+ * Checks if freet suggestion exists
+ */
+const isSuggestionExist = async (req: Request, res: Response, next: NextFunction) => {
+    const suggestion = await SuggestionCollection.findOne(req.body.suggestion, req.body.suggestionType, req.session.userId, req.params.freetId);
+    if (suggestion) {
+        res.status(400).json({
+        error: {
+            suggestionAlreadyxists: `Suggestion ${req.body.suggestion} of freet ID ${req.params.freetId} already exists.`
+        }
+        });
+        return;
+    }
     next();
 };
 
 /**
- * Checks if the tag is a valid
+ * Checks if the suggestion is a valid
  */
-const areValidTags = (req: Request, res: Response, next: NextFunction) => {
-    for (let tagLabel of req.body.tagLabels){
-        const pattern = new RegExp("^[\\w]+$");
-        if (!pattern.test(tagLabel)) {
-            res.status(400).json({
-            error: {
-                invalidTag: 'Tags must contain only upper and lower case letters, or underscores and must be non-empty'
+const isValidSuggestion = (req: Request, res: Response, next: NextFunction) => {
+    if (req.body.suggestionType in SuggestionType){
+        if (req.body.suggestionType == SuggestionType.Label) {
+            const pattern = new RegExp("^[\\w]+$");
+            if (!pattern.test(req.body.suggestion)) {
+                res.status(400).json({
+                error: {
+                    invalidSuggestion: 'Labels must contain only upper and lower case letters, or underscores and must be non-empty'
+                }
+                });
+                return;
             }
-            });
-            return;
+        } else if (req.body.suggestionType == SuggestionType.Intent) {
+            if (!(req.body.suggestion in IntentType)) {
+                res.status(400).json({
+                    error: {
+                        invalidSuggestion: `${req.body.suggestion} is not a valid intent.`
+                    }
+                });
+                return;
+            }
+        } else if (req.body.suggestionType == SuggestionType.Supplement) {
+            const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+            if (!(pattern.test(req.body.suggestion))) {
+                res.status(400).json({
+                    error: {
+                        invalidSuggestion: 'Supplement must be a valid link.'
+                    }
+                  });
+                  return;
+            }
         }
     }
     next();
 }
 
 export {
-    doTagsExist,
-    areValidTags
+    isSuggestionExist,
+    isValidSuggestionModifier,
+    isValidSuggestion
 };
