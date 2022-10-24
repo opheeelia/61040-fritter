@@ -40,7 +40,7 @@ const isSuggestionExist = async (req: Request, res: Response, next: NextFunction
  */
 const isValidSuggestion = (req: Request, res: Response, next: NextFunction) => {
     if (req.body.suggestionType in SuggestionType){
-        if (req.body.suggestionType == SuggestionType.Label) {
+        if (req.body.suggestionType == SuggestionType.Tag) {
             const pattern = new RegExp("^[\\w]+$");
             if (!pattern.test(req.body.suggestion)) {
                 res.status(400).json({

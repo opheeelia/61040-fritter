@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
+  <script src="/scripts/filter.js"></script>
   <script src="/scripts/suggestion.js"></script>
   <script src="/scripts/tag.js"></script>
   <script src="/scripts/intent.js"></script>
@@ -254,6 +255,76 @@
             <textarea id="suggestion" name="suggestion"></textarea>
           </div>
           <input type="submit" value="Delete a suggestion">
+        </form>
+
+        <form id="view-filters">
+          <h3>Search for filters</h3>
+          <div>
+            <label for="prefix">Filter name:</label>
+            <textarea id="prefix" name="prefix"></textarea>
+          </div>
+          <input type="submit" value="Search for filter">
+        </form>
+
+        <form id="view-own-filters">
+          <h3>View your filters</h3>
+          <input type="submit" value="View your filters">
+        </form>
+
+        <form id="create-filter">
+          <h3>Create a filter</h3>
+          <div>
+            <label for="name">Filter Name:</label>
+            <textarea id="name" name="name"></textarea>
+          </div>
+          <div>
+            <input type="radio" id="public" name="public" value="true">
+            <label for="html">Public</label><br>
+            <input type="radio" id="private" name="public" value="false">
+            <label for="css">Private</label><br>
+          </div>
+          <div>
+            <label for="includeUser">User IDs to include (comma separated):</label>
+            <textarea id="includeUser" name="includeUser"></textarea>
+          </div>
+          <div>
+            <label for="includeTag">Tag IDs to include (comma separated):</label>
+            <textarea id="includeTag" name="includeTag"></textarea>
+          </div>
+          <div>
+            <label for="includeIntent">Intent IDs to include (comma separated):</label>
+            <textarea id="includeIntent" name="includeIntent"></textarea>
+          </div>
+          <div>
+            <label for="includeSupplement">Supplements to include (comma separated):</label>
+            <textarea id="includeSupplement" name="includeSupplement"></textarea>
+          </div>
+          <div>
+            <label for="exclude-User">User IDs to exclude (comma separated):</label>
+            <textarea id="exclude-User" name="exclude-User"></textarea>
+          </div>
+          <div>
+            <label for="excludeTag">Tag IDs to exclude (comma separated):</label>
+            <textarea id="excludeTag" name="excludeTag"></textarea>
+          </div>
+          <div>
+            <label for="excludeIntent">Intent IDs to exclude (comma separated):</label>
+            <textarea id="excludeIntent" name="excludeIntent"></textarea>
+          </div>
+          <div>
+            <label for="excludeSupplement">Supplements to exclude (comma separated):</label>
+            <textarea id="excludeSupplement" name="excludeSupplement"></textarea>
+          </div>
+          <input type="submit" value="Create a filter">
+        </form>
+
+        <form id="delete-filter">
+          <h3>Delete a filter</h3>
+          <div>
+            <label for="filterId">Filter id:</label>
+            <textarea id="filterId" name="filterId"></textarea>
+          </div>
+          <input type="submit" value="Delete a filter">
         </form>
       </div>
     </section>

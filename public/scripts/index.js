@@ -79,7 +79,11 @@ const formsAndHandlers = {
   'view-own-suggestions': viewSuggestionById,
   'view-suggestions-by-type': viewSuggestionByType,
   'add-suggestion': addSuggestion,
-  'delete-suggestion': deleteSuggestion
+  'delete-suggestion': deleteSuggestion,
+  'view-filters': viewFilters,
+  'view-own-filters': viewOwnFilters,
+  'create-filter': createFilter,
+  'delete-filter': deleteFilter
 };
 
 // Attach handlers to forms

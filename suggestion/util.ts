@@ -10,7 +10,7 @@ type SuggestionResponse = {
 }
 
 enum SuggestionType {
-  Label = "Label",
+  Tag = "Tag",
   Intent = "Intent",
   Supplement = "Supplement"
 }

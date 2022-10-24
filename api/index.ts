@@ -14,6 +14,7 @@ import {freetRouter} from '../freet/router';
 import {intentRouter} from '../intent/router';
 import {tagRouter} from '../tag/router';
 import {suggestionRouter} from '../suggestion/router';
+import { filterRouter } from '../filter/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -82,6 +83,7 @@ app.use('/api/freets', freetRouter);
 app.use('/api/intent', intentRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/suggestions', suggestionRouter);
+app.use('/api/filters', filterRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {
