@@ -29,3 +29,9 @@ function deleteSuggestion(fields) {
     .then(showResponse)
     .catch(showResponse);
 }
+
+function viewFreetsWithSuggestion(fields){
+  fetch(`/api/suggestions/view?type=${fields.suggestionType}&suggestion=${fields.suggestion}`)
+    .then(showResponse)
+    .catch(showResponse);
+}

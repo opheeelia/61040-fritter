@@ -8,6 +8,21 @@ import * as util from './util';
 
 const router = express.Router();
 
+
+/**
+ * View all of the freets that contain the label
+ *
+ * @name GET /api/tags/view?tag=tagLabel
+ *
+ */
+ router.get(
+  '/view',
+  async (req: Request, res: Response) => {
+    const freets = await TagCollection.findFreetsLabeledBy(req.query.tag as string);
+    res.status(200).json({freets: freets});
+  }
+);
+
 /**
  * Get top X most popular tags
  *
@@ -47,21 +62,6 @@ router.post(
     });
   }
 );
-
-// /**
-//  * View all of the freets that contain the label
-//  *
-//  * @name GET /api/tags/:tagLabel
-//  *
-//  */
-// router.get(
-//   '/:tagLabel',
-//   async (req: Request, res: Response) => {
-//     const freets = await TagCollection.findFreetsLabeledBy(req.params.tagLabel);
-//     res.status(200).json({freets: freets});
-//   }
-// );
-
 
 
 export {router as tagRouter};

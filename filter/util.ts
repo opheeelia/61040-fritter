@@ -9,14 +9,14 @@ type FilterResponse = {
   public: boolean;
   dateCreated: string;
   include: Array<Array<string>>;
-  exclude: Array<Array<string>>;
+  // exclude: Array<Array<string>>;
 };
 
 enum FilterType {
   User,
   Tag,
   Intent,
-  Supplement
+  // Supplement
 }
 
 /**
@@ -47,7 +47,7 @@ const constructFilterResponse = (filter: HydratedDocument<Filter>): FilterRespon
     creatorId: filterCopy.creatorId.toString(),
     dateCreated: formatDate(filter.dateCreated),
     include: filterCopy.include.map((arr) => arr.map((id) => id.toString())),
-    exclude: filterCopy.exclude.map((arr) => arr.map((id) => id.toString())),
+    // exclude: filterCopy.exclude.map((arr) => arr.map((id) => id.toString())),
   };
 };
 

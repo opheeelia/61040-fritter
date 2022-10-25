@@ -10,9 +10,9 @@ type FreetResponse = {
   content: string;
   dateModified: string;
   views: number;
-  intent: string;
-  tags: string[];
-  suggestions: string[];
+  // intent: string;
+  // tags: string[];
+  // suggestions: string[];
 };
 
 /**
@@ -43,9 +43,9 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
     authorId: freetCopy.authorId.toString(),
     dateCreated: formatDate(freet.dateCreated),
     dateModified: formatDate(freet.dateModified),
-    intent: freetCopy.intent._id.toString(),
-    tags: freetCopy.tags.map((s) => s.toString()),
-    suggestions: freetCopy.suggestions.map((s) => s.toString()),
+    // intent: freetCopy.intent.toString(),
+    // tags: freetCopy.tags.map((s) => s.toString()),
+    // suggestions: freetCopy.suggestions.map((s) => s.toString()),
   };
 };
 

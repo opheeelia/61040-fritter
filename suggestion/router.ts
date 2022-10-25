@@ -9,6 +9,23 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * View all of the freets that have the suggestion
+ *
+ * @name GET /api/suggestions/view?
+ *
+ */
+ router.get(
+  '/view',
+  async (req: Request, res: Response) => {
+    const freets = await SuggestionCollection.findFreetsWithSuggestion(
+      req.query.suggestion as string,
+      req.query.type as util.SuggestionType,
+    );
+    res.status(200).json({freets: freets});
+  }
+);
+
+/**
  * Get top X most popular suggestions
  *
  * @name GET /api/suggestions/:freetId?type=SUGGESTION_TYPE

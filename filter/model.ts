@@ -12,8 +12,8 @@ export type Filter = {
   creatorId: Types.ObjectId;
   public: boolean;
   dateCreated: Date;
-  include: Array<Array<Types.ObjectId>>;
-  exclude: Array<Array<Types.ObjectId>>;
+  include: Array<Array<any>>;
+  // exclude: Array<Array<any>>;
 };
 
 const FilterSchema = new Schema<Filter>({
@@ -38,9 +38,9 @@ const FilterSchema = new Schema<Filter>({
   include: {
     type: [Array]
   },
-  exclude: {
-    type: [Array]
-  }
+  // exclude: {
+  //   type: [Array]
+  // }
 });
 
 const FilterModel = model<Filter>('Filter', FilterSchema);

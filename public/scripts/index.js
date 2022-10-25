@@ -73,17 +73,20 @@ const formsAndHandlers = {
   'add-intent': createIntent,
   'get-intent': getIntent,
   'delete-intent': deleteIntent,
+  'view-freets-with-intent': viewFreetsWithIntent,
   'view-all-tags': viewAllTags,
   'add-tag': addTag,
-  // 'view-freets-with-tag': viewFreetsWithTag,
+  'view-freets-with-tag': viewFreetsWithTag,
   'view-own-suggestions': viewSuggestionById,
   'view-suggestions-by-type': viewSuggestionByType,
   'add-suggestion': addSuggestion,
   'delete-suggestion': deleteSuggestion,
+  'view-freets-with-suggestion': viewFreetsWithSuggestion,
   'view-filters': viewFilters,
   'view-own-filters': viewOwnFilters,
   'create-filter': createFilter,
-  'delete-filter': deleteFilter
+  'delete-filter': deleteFilter,
+  'view-freets-by-filter': viewFreetsByFilter
 };
 
 // Attach handlers to forms

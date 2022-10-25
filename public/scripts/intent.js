@@ -23,3 +23,9 @@ function deleteIntent(fields) {
     .then(showResponse)
     .catch(showResponse);
 }
+
+function viewFreetsWithIntent(fields){
+  fetch(`/api/intent/view?intent=${fields.intent}`)
+    .then(showResponse)
+    .catch(showResponse);
+}

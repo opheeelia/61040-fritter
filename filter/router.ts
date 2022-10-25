@@ -8,6 +8,24 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * View all of the freets through filter
+ *
+ * @name GET /api/filters/view?filterId=FILTER_ID
+ *
+ */
+ router.get(
+  '/view',
+  [
+    filterValidator.isFilterExists,
+    filterValidator.isValidFilterModifier
+  ],
+  async (req: Request, res: Response) => {
+    const freets = await FilterCollection.applyFilter(req.query.filterId as string, req.session.userId);
+    res.status(200).json({freets: freets});
+  }
+);
+
+/**
  * Get top X most popular filters
  *
  * @name GET /api/filters?prefix=prefix
@@ -56,9 +74,9 @@ router.post(
     const filter = await FilterCollection.addOne(
       req.body.name,
       req.session.userId,
-      req.body.publicFilter,
+      req.body.public,
       req.body.include,
-      req.body.exclude
+      // req.body.exclude
     );
 
     res.status(201).json({
@@ -78,7 +96,9 @@ router.delete(
   '/:filterId',
   [
     userValidator.isUserLoggedIn,
+    filterValidator.isFilterExists,
     filterValidator.isValidFilterModifier
+    // TODO: is a valid filter
   ],
   async (req: Request, res: Response) => {
     const deleted = await FilterCollection.deleteOne(req.params.filterId);

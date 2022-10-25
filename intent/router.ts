@@ -9,6 +9,20 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * View all of the freets that contain the intent
+ *
+ * @name GET /api/intent/view?intent=intent
+ *
+ */
+ router.get(
+  '/view',
+  async (req: Request, res: Response) => {
+    const freets = await IntentCollection.findFreetsWithIntent(req.query.intent as string);
+    res.status(200).json({freets: freets});
+  }
+);
+
+/**
  * Get intent of a freet
  *
  * @name GET /api/intent/:freetId?

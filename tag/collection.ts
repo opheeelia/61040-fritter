@@ -3,6 +3,7 @@ import type {Tag} from './model';
 import type {Freet} from '../freet/model';
 import TagModel from './model';
 import FreetModel from '../freet/model';
+import { constructTagResponse } from './util';
 
 /**
  * This files contains a class that has the functionality to explore tags
@@ -45,19 +46,19 @@ class TagCollection {
     return await TagModel.find({});
   }
 
-  // WIP
-  // /**
-  //  * Get all the freets in with the tag
-  //  *
-  //  * @param {string} tagLabel - The tag of the freets 
-  //  * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
-  //  */
-  // static async findFreetsLabeledBy(tagLabel: string): Promise<Array<HydratedDocument<Freet>>> {
-  //   // Retrieves freets and sorts them from most to least recent
-  //   TagModel.aggregate([{$match: {tagLabel: tagLabel}}, {}])
-  //   const tag = await FreetModel.find({tagLabel: tagLabel}).sort({dateModified: -1});
-  //   return tag;
-  // }
+  /**
+   * Get all the freets in with the tag
+   *
+   * @param {string} tagLabel - The tag of the freets 
+   * @return {Promise<Freet[]>} - An array of all of the freets
+   */
+  static async findFreetsLabeledBy(tagLabel: string): Promise<Array<Freet>> {
+    // Retrieves freets and sorts them from most to least recent
+    const tags = await TagModel.find({tagLabel: tagLabel}).populate('freetId').sort({dateCreated: -1});
+    return tags.map((tag) => {
+      return tag.freetId as object as Freet;
+    });
+  }
 
 }
 

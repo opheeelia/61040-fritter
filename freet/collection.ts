@@ -2,8 +2,6 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
-import { Intent } from 'intent/model';
-import { Tag } from 'tag/model';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -83,6 +81,18 @@ class FreetCollection {
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
     const freets = await FreetModel.find({authorId: author._id});
+    await Promise.all(freets.map(this.populateFreet));
+    return freets;
+  }
+
+  /**
+   * Get all the freets in by given author
+   *
+   * @param {string} uid - The uid
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
+   */
+  static async findAllByUserId(uid: string): Promise<Array<HydratedDocument<Freet>>> {
+    const freets = await FreetModel.find({authorId: uid});
     await Promise.all(freets.map(this.populateFreet));
     return freets;
   }

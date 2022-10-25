@@ -3,6 +3,7 @@ import type {Suggestion} from './model';
 import type {Freet} from '../freet/model';
 import SuggestionModel from './model';
 import FreetModel from '../freet/model';
+import { SuggestionType } from './util';
 
 /**
  * This files contains a class that has the functionality to explore suggestions
@@ -80,6 +81,25 @@ class SuggestionCollection {
    static async deleteOne(suggestionId: Types.ObjectId | string): Promise<boolean> {
     const suggestion = await SuggestionModel.deleteOne({_id: suggestionId});
     return suggestion !== null;
+  }
+
+
+  /**
+   * Get all the freets in with the suggestion
+   *
+   * @param {string} suggestion - The suggestion
+   * @param {string} suggestionType - The suggestion type
+   * @return {Promise<Freet[]>} - An array of all of the freets
+   */
+   static async findFreetsWithSuggestion(suggestion: string, suggestionType: string): Promise<Array<Freet>> {
+    // Retrieves freets and sorts them from most to least recent
+    const suggestions = await SuggestionModel.find({
+      suggestion: suggestion,
+      suggestionType: suggestionType as SuggestionType
+    }).populate('freetId').sort({dateCreated: -1});
+    return suggestions.map((suggestion) => {
+      return suggestion.freetId as object as Freet;
+    });
   }
 
 }

@@ -170,6 +170,19 @@
           <input type="submit" value="Delete Freet Intent">
         </form>
 
+        <form id="view-freets-with-intent">
+          <h3>View Freets with Specified Intent</h3>
+          <div>
+            <label for="intent">Select intent:</label>
+            <select name="intent" id="intent-type">
+              <option value="Inform">Inform</option>
+              <option value="Joke">Joke</option>
+              <option value="Share">Share</option>
+            </select>
+          </div>
+          <input type="submit" value="View Freets with Intent">
+        </form>
+
         <form id="add-tag">
           <h3>Add Tag(s) to Freet</h3>
           <div>
@@ -192,14 +205,14 @@
           <input type="submit" value="View All Tags">
         </form>
 
-        <!-- <form id="view-freets-with-tag">
+        <form id="view-freets-with-tag">
           <h3>View Freets with Specified Tag</h3>
           <div>
-            <label for="tagLabel">Prefix:</label>
+            <label for="tagLabel">Tag:</label>
             <textarea id="tagLabel" name="tagLabel"></textarea>
           </div>
           <input type="submit" value="View Freets with Tag">
-        </form> -->
+        </form>
 
         <form id="view-suggestions-by-type">
           <h3>View Suggestions by Type</h3>
@@ -256,6 +269,23 @@
           </div>
           <input type="submit" value="Delete a suggestion">
         </form>
+        
+        <form id="view-freets-with-suggestion">
+          <h3>View Freets with Suggestion</h3>
+          <div>
+            <label for="suggestion">Suggestion:</label>
+            <textarea id="suggestion" name="suggestion"></textarea>
+          </div>
+          <div>
+            <label for="suggestionType">Select type:</label>
+            <select name="suggestionType" id="suggestionType">
+              <option value="Label">Label</option>
+              <option value="Intent">Intent</option>
+              <option value="Supplement">Supplement</option>
+            </select>
+          </div>
+          <input type="submit" value="View Freets with Suggestion">
+        </form>
 
         <form id="view-filters">
           <h3>Search for filters</h3>
@@ -279,9 +309,9 @@
           </div>
           <div>
             <input type="radio" id="public" name="public" value="true">
-            <label for="html">Public</label><br>
+            <label for="public">Public</label><br>
             <input type="radio" id="private" name="public" value="false">
-            <label for="css">Private</label><br>
+            <label for="private">Private</label><br>
           </div>
           <div>
             <label for="includeUser">User IDs to include (comma separated):</label>
@@ -295,11 +325,11 @@
             <label for="includeIntent">Intent IDs to include (comma separated):</label>
             <textarea id="includeIntent" name="includeIntent"></textarea>
           </div>
-          <div>
+          <!-- <div>
             <label for="includeSupplement">Supplements to include (comma separated):</label>
             <textarea id="includeSupplement" name="includeSupplement"></textarea>
-          </div>
-          <div>
+          </div> -->
+          <!-- <div>
             <label for="exclude-User">User IDs to exclude (comma separated):</label>
             <textarea id="exclude-User" name="exclude-User"></textarea>
           </div>
@@ -310,11 +340,11 @@
           <div>
             <label for="excludeIntent">Intent IDs to exclude (comma separated):</label>
             <textarea id="excludeIntent" name="excludeIntent"></textarea>
-          </div>
-          <div>
+          </div> -->
+          <!-- <div>
             <label for="excludeSupplement">Supplements to exclude (comma separated):</label>
             <textarea id="excludeSupplement" name="excludeSupplement"></textarea>
-          </div>
+          </div> -->
           <input type="submit" value="Create a filter">
         </form>
 
@@ -326,6 +356,16 @@
           </div>
           <input type="submit" value="Delete a filter">
         </form>
+
+        <form id="view-freets-by-filter">
+          <h3>View Freets by Filter</h3>
+          <div>
+            <label for="filterId">Filter Id:</label>
+            <textarea id="filterId" name="filterId"></textarea>
+          </div>
+          <input type="submit" value="View Freets by Filter">
+        </form>
+
       </div>
     </section>
     <section>

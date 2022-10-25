@@ -22,8 +22,8 @@ function addTag(fields) {
     .catch(showResponse);
 }
 
-// function viewFreetsWithTag(fields){
-//   fetch(`/api/tags/${fields.tagLabel}`)
-//     .then(showResponse)
-//     .catch(showResponse);
-// }
+function viewFreetsWithTag(fields){
+  fetch(`/api/tags/view?tag=${fields.tagLabel}`)
+    .then(showResponse)
+    .catch(showResponse);
+}
