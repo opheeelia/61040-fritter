@@ -24,7 +24,7 @@ const router = express.Router();
 );
 
 /**
- * Get top X most popular tags
+ * Get most popular tags
  *
  * @name GET /api/tags/
  *
@@ -42,7 +42,13 @@ router.get(
  * Add tags to a freet
  *
  * @name POST /api/tags/:freetId
- *
+ * 
+ * @throws {403} - If the user is not logged in
+ * @throws {404} - If the freet does not exist
+ * @throws {403} - If the user is not a valid modifier of the freet
+ * @throws {400} - If the tag already exists for that freet
+ * @throws {400} - If the tag contains non alphanumeric characters
+ * @return {TagResponse} - The created tag freet mapping
  */
 router.post(
   '/:freetId',

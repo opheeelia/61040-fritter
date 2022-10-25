@@ -396,29 +396,20 @@ This renders the `index.html` file that will be used to interact with the backen
 - 404 if the filter does not exist
 - 403 if the filter is not public and the user is not the creator of the filter
 
-`GET /api/labels` - Get top X most popular labels used for searching
+#### `GET /api/tags/?prefix={prefix}` - Get most popular labels with the given prefix used for searching
 
 **Returns**
 
-- An array of at most X labels sorted by the most popular (has the most freets)
+- An array of tags that match the given prefix sorted by the most popular (has the most freets)
 
-`GET /api/labels?prefix=PREFIX` - Get top X most popular labels used with the given prefix 
-
-**Returns**
-
-- An array of at most X labels that match the given prefix sorted by the most popular (has the most freets)
-
-`GET /api/labels/:label?` - View all of the freets that contain the label for searching
+#### `GET /api/tags/view?tag={tagLabel}` - View all of the freets that contain the label for searching
 
 **Returns** 
 
-- An array of all of the freets that contain the label sorted by freet creation date
+- An array of all of the freets that contain the label sorted by freet creation date, empty if none found
 
-**Throws**
 
-- 404 if label is not found
-
-`POST /api/labels/` - Create a new label 
+#### `POST /api/labels/` - Create a new label 
 
 **Body**
 
@@ -430,21 +421,11 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Throws**
 
-- 403 if the user is not logged in
-- 403 if the user is not the author of the referenced freet
-- 404 if the freet_id is invalid
-
-`DELETE /api/labels/:freet_id?` - Delete a label associated with a post
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- 403 if the user is not logged in
-- 403 if the user is not the author of the referenced freet
-- 404 if the freet_id is invalid
+- 403 If the user is not logged in
+- 404 If the freet does not exist
+- 403 If the user is not a valid modifier of the freet
+- 400 If the tag already exists for that freet
+- 400 If the tag contains non alphanumeric characters
 
 `GET /api/suggestions/:freet_id?` - Get the suggestions for a freet
 
