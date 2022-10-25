@@ -29,7 +29,24 @@ const isFilterExists = async (req: Request, res: Response, next: NextFunction) =
   const userId = filter.creatorId;
   if (req.session.userId !== userId.toString()) {
     res.status(403).json({
-      error: 'Cannot read/modify other users\' filters.'
+      error: 'Cannot modify other users\' filters.'
+    });
+    return;
+  }
+
+  next();
+};
+
+/**
+ * Checks if the current user is the author of the freet whose freetId is in req.params
+ */
+ const isValidFilterViewer = async (req: Request, res: Response, next: NextFunction) => {
+  const filterId = req.params.filterId ? req.params.filterId : req.query.filterId as string
+  const filter = await FilterCollection.findOne(filterId);
+  const userId = filter.creatorId;
+  if (filter.public == false && req.session.userId !== userId.toString()) {
+    res.status(403).json({
+      error: 'Cannot read other users\' filters.'
     });
     return;
   }
@@ -40,4 +57,5 @@ const isFilterExists = async (req: Request, res: Response, next: NextFunction) =
 export {
   isFilterExists,
   isValidFilterModifier,
+  isValidFilterViewer
 };

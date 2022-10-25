@@ -334,7 +334,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
-`GET /api/filters` - Get all public filters for searching
+#### `GET /api/filters?prefix={prefix}` - Get all public filters for searching
 
 **Returns** 
 
@@ -343,9 +343,8 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - 403 if the user is not logged in
-- 403 if the filter is not public and the user is not the creator of the filter
 
-`GET /api/filters?creator=USER_ID` - Get all saved filters
+#### `GET /api/filters/mine` - Get all of the logged in user's saved filters
 
 **Returns** 
 
@@ -354,13 +353,16 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - 403 if the user is not logged in
-- 403 if the logged in user does not match the user id
 
-`POST /api/filters` - Create a new filter
+#### `POST /api/filters` - Create a new filter
 
 **Body**
 
-- filter_id {id} (optional) - Id of the filter to copy from
+- Filter name
+- Whether or not the filter is public
+- Ids of users to include
+- Ids of tags to include
+- Ids of intents to include
 
 **Returns**
 
@@ -369,10 +371,8 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - 403 if the user is not logged in
-- 403 if the referenced filter is not public and the user is not the creator of the filter
-- 404 if the filter_id is invalid
 
-`DELETE /api/filters:filter_id?` - Delete a filter
+#### `DELETE /api/filters:filter_id?` - Delete a filter
 
 **Returns**
 
@@ -382,8 +382,9 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - 403 if the user is not logged in
 - 403 if the logged in user does not match the user id
+- 404 if the filter does not exist
 
-`GET /api/filter/:id` - Get all posts that pass the specified filter
+#### `GET /api/filters/view?filterId={id}` - Get all posts that pass the specified filter
 
 **Returns**
 
@@ -392,7 +393,8 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - 403 if the user is not logged in
-- 403 if the logged in user does not match the referenced filter’s user
+- 404 if the filter does not exist
+- 403 if the filter is not public and the user is not the creator of the filter
 
 `GET /api/labels` - Get top X most popular labels used for searching
 
