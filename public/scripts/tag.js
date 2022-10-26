@@ -27,3 +27,9 @@ function viewFreetsWithTag(fields){
     .then(showResponse)
     .catch(showResponse);
 }
+
+function deleteFreetsTags(fields){
+  fetch(`/api/tags/${fields.freetId}`, {method: 'DELETE'})
+    .then(showResponse)
+    .catch(showResponse);
+}

@@ -425,6 +425,16 @@ This renders the `index.html` file that will be used to interact with the backen
 - 400 If the tag already exists for that freet
 - 400 If the tag contains non alphanumeric characters
 
+#### `DELETE /api/tags/:freetId` - Delete the tags of a freet
+
+**Returns**
+- A success message
+
+**Throws**
+- 40
+- 403 If the user is not logged in or is not the author of the freet
+- 404 If the freet is not valid
+
 #### `GET /api/suggestions/:freet_id?type={suggestion_type}` - Get the suggestions for a freet
 
 **Returns**
@@ -482,7 +492,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - 403 if the user is not the author of the referenced freet
 - 404 if the freet_id is invalid
 
-`GET /api/intent/:freet_id?` - Get the intent of a freet
+#### `GET /api/intent/:freet_id?` - Get the intent of a freet
 
 **Returns**
 
@@ -507,8 +517,9 @@ This renders the `index.html` file that will be used to interact with the backen
 - 403 if the user is not the author of the referenced freet
 - 400 if the intent was already created
 - 400 if the intent is not valid or it does not contain a supplement if required
+- 400 if the supplement is not valid or not supplied for inform intent
 
-`DELETE /api/intent/:freet_id?` - Delete the intent of a freet
+#### `DELETE /api/intent/:freet_id?` - Delete the intent of a freet
 
 **Returns**
 

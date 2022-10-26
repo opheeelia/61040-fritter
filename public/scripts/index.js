@@ -77,6 +77,7 @@ const formsAndHandlers = {
   'view-all-tags': viewAllTags,
   'add-tag': addTag,
   'view-freets-with-tag': viewFreetsWithTag,
+  'delete-tags': deleteFreetsTags,
   'view-own-suggestions': viewSuggestionById,
   'view-suggestions-by-type': viewSuggestionByType,
   'add-suggestion': addSuggestion,

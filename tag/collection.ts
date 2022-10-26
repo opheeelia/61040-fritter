@@ -60,6 +60,17 @@ class TagCollection {
     });
   }
 
+  /**
+   * Delete all tags belonging to a freet
+   *
+   * @param {string} freetId - The id of the freet to delete tags of
+   * @return {Promise<boolean>} - Whether or not delete was successful
+   */
+  static async deleteForFeet(freetId: Types.ObjectId | string): Promise<boolean> {
+    let tags = await TagModel.deleteMany({freetId});
+    return tags !== null;
+  }
+
 }
 
 export default TagCollection;

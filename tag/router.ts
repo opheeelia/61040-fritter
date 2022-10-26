@@ -56,7 +56,7 @@ router.post(
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,
     freetValidator.isValidFreetModifier,
-    tagValidator.doTagsExist,
+    tagValidator.areTagsNew,
     tagValidator.areValidTags
   ],
   async (req: Request, res: Response) => {
@@ -69,5 +69,29 @@ router.post(
   }
 );
 
+/**
+ * Delete a tag
+ *
+ * @name DELETE /api/tags/:freetId
+ *
+ * @return {string} - A success message
+ * @throws {403} - If the user is not logged in or is not the author of
+ *                 the freet
+ * @throws {404} - If the freet is not valid
+ */
+ router.delete(
+  '/:freetId?',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    freetValidator.isValidFreetModifier,
+  ],
+  async (req: Request, res: Response) => {
+    await TagCollection.deleteForFeet(req.params.freetId);
+    res.status(200).json({
+      message: 'Deletion successful.'
+    });
+  }
+);
 
 export {router as tagRouter};

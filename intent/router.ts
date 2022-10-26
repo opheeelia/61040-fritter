@@ -28,8 +28,9 @@ const router = express.Router();
  * @name GET /api/intent/:freetId?
  *
  * @return {IntentResponse} - Intent of the freet
- * @throws {404} - If the freetId is not valid
  *
+ * @throws {404} - If the freet does not have intent
+ * @throws {404} - If the freetId is not valid
  */
 router.get(
   '/:freetId?',

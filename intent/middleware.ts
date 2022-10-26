@@ -22,7 +22,7 @@ import {IntentType} from './util';
 };
 
 /**
- * Checks if a freet with freetId is req.params exists
+ * Checks if a freet has an intent
  */
  const isIntentExists = async (req: Request, res: Response, next: NextFunction) => {
   const validFormat = Types.ObjectId.isValid(req.params.freetId);

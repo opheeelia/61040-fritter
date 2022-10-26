@@ -1,29 +1,10 @@
 import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
 import TagCollection from '../tag/collection';
-
-// /**
-//  * Checks if a freet with freetId is req.params exists
-//  */
-//  const isIntentNew = async (req: Request, res: Response, next: NextFunction) => {
-//   const validFormat = Types.ObjectId.isValid(req.params.freetId);
-//   const intent = validFormat ? await IntentCollection.findOne(req.params.freetId) : '';
-//   if (intent) {
-//     res.status(404).json({
-//       error: {
-//         intentNotFound: `Intent with freet ID ${req.params.freetId} already exists.`
-//       }
-//     });
-//     return;
-//   }
-
-//   next();
-// };
 
 /**
  * Checks if freet tag combo exists
  */
-const doTagsExist = async (req: Request, res: Response, next: NextFunction) => {
+const areTagsNew = async (req: Request, res: Response, next: NextFunction) => {
     for (let tagLabel of req.body.tagLabels){
         const tag = await TagCollection.findOne(tagLabel, req.params.freetId);
         if (tag) {
@@ -35,7 +16,6 @@ const doTagsExist = async (req: Request, res: Response, next: NextFunction) => {
             return;
         }
     }
-
     next();
 };
 
@@ -58,6 +38,6 @@ const areValidTags = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export {
-    doTagsExist,
+    areTagsNew,
     areValidTags
 };
