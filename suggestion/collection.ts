@@ -1,4 +1,4 @@
-import {HydratedDocument, Types} from 'mongoose';
+import {HydratedDocument, ObjectId, Types} from 'mongoose';
 import type {Suggestion} from './model';
 import type {Freet} from '../freet/model';
 import SuggestionModel from './model';
@@ -69,7 +69,7 @@ class SuggestionCollection {
    */
   static async findAllByType(suggestionType: string, freetId: Types.ObjectId | string): Promise<Array<HydratedDocument<Suggestion>>> {
     // return SuggestionModel.aggregate([{$match: {suggestionType}}, {"$group":{_id:"$suggestion", count:{$sum:1}}}]);
-    return await SuggestionModel.aggregate([{$match: {suggestionType, freetId}}, {$sortByCount: "$suggestion"}]);
+    return await SuggestionModel.aggregate([{$match: {suggestionType: suggestionType as SuggestionType, freetId: new Types.ObjectId(freetId)}}, {$sortByCount: "$suggestion"}]);
   }
 
   /**

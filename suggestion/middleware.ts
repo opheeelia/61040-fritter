@@ -20,7 +20,7 @@ import { IntentType } from '../intent/util';
   };
 
 /**
- * Checks if freet suggestion exists
+ * Checks if freet suggestion by this user already exists
  */
 const isSuggestionExist = async (req: Request, res: Response, next: NextFunction) => {
     const suggestion = await SuggestionCollection.findOne(req.body.suggestion, req.body.suggestionType, req.session.userId, req.params.freetId);

@@ -7,6 +7,9 @@
  */
 
 function viewSuggestionByType(fields) {
+  if (fields.suggestionType == ""){
+    fields.suggestionType = undefined;
+  }
   fetch(`/api/suggestions/${fields.freetId}?type=${fields.suggestionType}`)
     .then(showResponse)
     .catch(showResponse);

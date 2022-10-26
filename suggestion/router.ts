@@ -11,7 +11,7 @@ const router = express.Router();
 /**
  * View all of the freets that have the suggestion
  *
- * @name GET /api/suggestions/view?
+ * @name GET /api/suggestions/view?suggestion={suggestion}&type={suggestionType}
  *
  */
  router.get(
@@ -26,10 +26,11 @@ const router = express.Router();
 );
 
 /**
- * Get top X most popular suggestions
+ * Get most popular suggestions
  *
  * @name GET /api/suggestions/:freetId?type=SUGGESTION_TYPE
- *
+ * 
+ * @throws {404} if the freet_id is invalid
  */
 router.get(
   '/:freetId',
@@ -41,14 +42,15 @@ router.get(
       next();
       return;
     }
-    // TODO: get all of the types and combine them to send response
-    const labels = await SuggestionCollection.findAllByType(req.query.type as string, req.params.freetId);
+    let labels = [];
+    for (let suggestionType of Object.keys(util.SuggestionType)){
+      labels.push(...(await SuggestionCollection.findAllByType(suggestionType, req.params.freetId)));
+    }
     res.status(200).json({suggestions: labels});
     return;
   },
   [
     freetValidator.isFreetExists,
-    suggestionValidator.isValidSuggestion
   ],
   async (req: Request, res: Response) => {
     const suggestions = await SuggestionCollection.findAllByType(req.query.type as string, req.params.freetId);
@@ -61,6 +63,8 @@ router.get(
  *
  * @name GET /api/suggestions/:freetId/mine
  *
+ * @throws {403} if the user is not logged in
+ * @throws {404} if the freet_id is invalid
  */
 router.get(
   '/:freetId/mine',
@@ -78,7 +82,11 @@ router.get(
  * Add suggestion to a freet
  *
  * @name POST /api/suggestions/:freetId
- *
+ * 
+ * @throws {403} if the user is not logged in
+ * @throws {404} if the freet_id is invalid
+ * @throws {400} if the suggestion is not valid
+ * @throws {400} if the suggestion was already made by the user 
  */
 router.post(
   '/:freetId',
@@ -102,7 +110,10 @@ router.post(
  * Delete suggestion to a freet
  *
  * @name DELETE /api/suggestions/:suggestionId
- *
+ * 
+ * @throws {403} if the user is not logged in
+ * @throws {403} if the user is not the author of the referenced freet
+ * @throws {404} if the freet_id is invalid
  */
 router.delete(
   '/:suggestionId',

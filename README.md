@@ -358,11 +358,9 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Body**
 
-- Filter name
-- Whether or not the filter is public
-- Ids of users to include
-- Ids of tags to include
-- Ids of intents to include
+- {string} Filter name
+- {bool} Whether or not the filter is public
+- {Array<Array<string>>} Ids of users, tags, and intents to include
 
 **Returns**
 
@@ -427,23 +425,39 @@ This renders the `index.html` file that will be used to interact with the backen
 - 400 If the tag already exists for that freet
 - 400 If the tag contains non alphanumeric characters
 
-`GET /api/suggestions/:freet_id?` - Get the suggestions for a freet
+#### `GET /api/suggestions/:freet_id?type={suggestion_type}` - Get the suggestions for a freet
 
 **Returns**
 
-- An object containing all of the suggested labels, intents, and supplements mapped to a count of how many people suggested each one
+- An object containing all of the suggestions of the given type if supplied, otherwise all of the suggestions of labels, intents, and supplements
 
 **Throws**
 
 - 404 if the freet_id is invalid
 
-`POST /api/suggestions/:freet_id?` - Create a suggestion for a freet by the logged in user
+#### `GET /api/suggestions/:freet_id/mine` - Get all suggestions for a freet by a user
+
+**Returns**
+
+- An object containing all of the suggestions from the user
+
+**Throws**
+
+- 404 if the freet_id is invalid
+#### `GET /api/suggestions/view?suggestion={suggestion}&type={suggestionType}` - View the freets with the suggestion
+
+**Returns**
+
+- An object containing all of the freets with the suggestion
+
+#### `POST /api/suggestions/:freet_id` - Create a suggestion for a freet by the logged in user
 
 **Body**
 
-- labels {array<string>} (optional) - An array of labels to add
-- intent {string} (optional) - A suggested intent
-- supplement {string} (optional) - A suggested link to supplement the intent
+- {string} suggestion - The suggestion string
+- {string} suggestionType - The suggestion type
+- {string} freetId - The freet getting the suggestion
+- {string} userId - The suggestor id
 
 **Returns**
 
@@ -452,16 +466,11 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - 403 if the user is not logged in
-- 403 if the user is not the author of the referenced freet
 - 404 if the freet_id is invalid
+- 400 if the suggestion is not valid
+- 400 if the suggestion was already made by the user 
 
-`PUT /api/suggestions/:freet_id?` - Edit the suggestion for a freet by the logged in user. Can also be used to delete a user’s suggestions. 
-
-**Body**
-
-- labels {array<string>} (optional) - An edited array of labels to add
-- intent {string} (optional) - An edited suggested intent
-- supplement {string} (optional) - An edited suggested link to supplement the intent
+#### `DELETE /api/suggestions/:freet_id?` - Delete the suggestion for a freet
 
 **Returns**
 

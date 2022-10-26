@@ -70,7 +70,7 @@ router.get(
  * Create a filter
  *
  * @name POST /api/filters
- *
+ * 
  * @throws {403} - If the user is not logged in
  */
 router.post(
