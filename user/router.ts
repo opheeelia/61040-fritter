@@ -8,6 +8,27 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * Get the signed in user
+ * TODO: may need better route and documentation
+ * (so students don't accidentally delete this when copying over)
+ *
+ * @name GET /api/users/session
+ *
+ * @return - currently logged in user, or null if not logged in
+ */
+router.get(
+  '/session',
+  [],
+  async (req: Request, res: Response) => {
+    const user = await UserCollection.findOneByUserId(req.session.userId);
+    res.status(200).json({
+      message: 'Your session info was found successfully.',
+      user: user ? util.constructUserResponse(user) : null
+    });
+  }
+);
+
+/**
  * Sign in user.
  *
  * @name POST /api/users/session
@@ -97,7 +118,7 @@ router.post(
 /**
  * Update a user's profile.
  *
- * @name PUT /api/users
+ * @name PATCH /api/users
  *
  * @param {string} username - The user's new username
  * @param {string} password - The user's new password
@@ -106,7 +127,7 @@ router.post(
  * @throws {409} - If username already taken
  * @throws {400} - If username or password are not of the correct format
  */
-router.put(
+router.patch(
   '/',
   [
     userValidator.isUserLoggedIn,

@@ -12,23 +12,6 @@ import UserCollection from '../user/collection';
  * and contains all the information in Freet. https://mongoosejs.com/docs/typescript.html
  */
 class FreetCollection {
-  static async populateFreet(freet: HydratedDocument<Freet>) {
-    await freet.populate([
-      {
-        path: 'intent',
-        populate: {path: 'freetId'}
-      },
-      {
-        path: 'tags',
-        populate: {path: 'freetId'}
-      },
-      {
-        path: 'suggestions',
-        populate: {path: 'freetId'}
-      }
-    ]);
-  }
-
   /**
    * Add a freet to the collection
    *
@@ -45,7 +28,7 @@ class FreetCollection {
       dateModified: date
     });
     await freet.save(); // Saves freet to MongoDB
-    return freet;
+    return freet.populate('authorId');
   }
 
   /**
@@ -55,9 +38,7 @@ class FreetCollection {
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
-    const freet = await FreetModel.findOne({_id: freetId});
-    await this.populateFreet(freet);
-    return freet;
+    return FreetModel.findOne({_id: freetId}).populate('authorId');
   }
 
   /**
@@ -67,9 +48,7 @@ class FreetCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    const freets = await FreetModel.find({}).sort({dateModified: -1});
-    await Promise.all(freets.map(this.populateFreet));
-    return freets;
+    return FreetModel.find({}).sort({dateModified: -1}).populate('authorId');
   }
 
   /**
@@ -80,43 +59,22 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    const freets = await FreetModel.find({authorId: author._id});
-    await Promise.all(freets.map(this.populateFreet));
-    return freets;
-  }
-
-  /**
-   * Get all the freets in by given author
-   *
-   * @param {string} uid - The uid
-   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
-   */
-  static async findAllByUserId(uid: string): Promise<Array<HydratedDocument<Freet>>> {
-    const freets = await FreetModel.find({authorId: uid});
-    await Promise.all(freets.map(this.populateFreet));
-    return freets;
+    return FreetModel.find({authorId: author._id}).sort({dateModified: -1}).populate('authorId');
   }
 
   /**
    * Update a freet with the new content
    *
    * @param {string} freetId - The id of the freet to be updated
-   * @param {Object} freetDetails - An object with the freet's updated details
+   * @param {string} content - The new content of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
    */
-  static async updateOne(freetId: Types.ObjectId | string, freetDetails: any): Promise<HydratedDocument<Freet>> {
+  static async updateOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({_id: freetId});
-    if (freetDetails.views) {
-      freet.views += 1;
-    }
-
-    if (freetDetails.content) {
-      freet.content = freetDetails.content as string;
-    }
-
+    freet.content = content;
     freet.dateModified = new Date();
     await freet.save();
-    return freet;
+    return freet.populate('authorId');
   }
 
   /**
